@@ -15,6 +15,7 @@ internal class Program
 		}
 		return result;
 	}
+
 	private static string evenOrOdd(char[] chars)
 	{
 		int lenString = chars.Length;
@@ -41,6 +42,7 @@ internal class Program
 		}
 		return result;
 	}
+
 	private static void countAllChars(string inputString)
 	{
 		char[] chars = inputString.ToCharArray();
@@ -61,6 +63,39 @@ internal class Program
 			Console.WriteLine($"Буква: {c.Key} встречается: {c.Value} раз.");
 		}
 	}
+
+	private static void maxSubString(string inputString)
+	{
+		char[] chars = inputString.ToCharArray();
+		string alphabet = "aeoiuy";
+		int first = -1;
+		int second = -1;
+		for (int i = 0; i < chars.Length; i++)
+		{
+			if (alphabet.Contains(chars[i]))
+			{
+				if (first == -1)
+				{
+					first = i;
+				}
+				else
+				{
+					second = i;
+				}
+			}
+		}
+		if (first == -1 || second == -1)
+		{
+			Console.WriteLine("В данной строке менее двух гласных букв");
+		}
+		else
+		{
+			char[] result= new char[second-first+1];
+			Array.Copy(chars, first, result, 0, second - first+1);
+			Console.WriteLine(new string(result));
+        }
+    }
+
 	private static void Main(string[] args)
 	{
 		string inputString = Console.ReadLine();
@@ -68,7 +103,9 @@ internal class Program
 		string result = englishLowRegister(chars);
 		if (String.IsNullOrEmpty(result))
 		{
-			countAllChars(evenOrOdd(chars));
+			string finalString = evenOrOdd(chars);
+			countAllChars(finalString);
+			maxSubString(finalString);
 		}
 		else
 		{
