@@ -1,4 +1,6 @@
-﻿internal class Program
+﻿using System;
+
+internal class Program
 {
 	private static string englishLowRegister(char[] chars)
 	{
@@ -13,7 +15,7 @@
 		}
 		return result;
 	}
-	private static void evenOrOdd(char[] chars)
+	private static string evenOrOdd(char[] chars)
 	{
 		int lenString = chars.Length;
 		string result = "";
@@ -37,6 +39,27 @@
 			}
 			Console.WriteLine(result);
 		}
+		return result;
+	}
+	private static void countAllChars(string inputString)
+	{
+		char[] chars = inputString.ToCharArray();
+		Dictionary<char, int> result = new Dictionary<char, int>();
+		foreach (char c in chars)
+		{
+			if (result.ContainsKey(c))
+			{
+				result[c]++;
+			}
+			else
+			{
+				result[c] = 1;
+			}
+		}
+		foreach (var c in result)
+		{
+			Console.WriteLine($"Буква: {c.Key} встречается: {c.Value} раз.");
+		}
 	}
 	private static void Main(string[] args)
 	{
@@ -45,7 +68,7 @@
 		string result = englishLowRegister(chars);
 		if (String.IsNullOrEmpty(result))
 		{
-			evenOrOdd(chars);
+			countAllChars(evenOrOdd(chars));
 		}
 		else
 		{
