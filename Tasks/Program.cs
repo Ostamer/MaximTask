@@ -1,15 +1,28 @@
 ﻿internal class Program
 {
-	private static void Main(string[] args)
+	private static string englishLowRegister(char[] chars)
 	{
-		string inputString = Console.ReadLine();
-		int lenString = inputString.Length;
-		char[] chars = inputString.ToCharArray();
+		string englishAlphabet = "qwertyuiopasdfghjklzxcvbnm";
+		string result = "";
+		for (int i = 0; i < chars.Length; i++)
+		{
+			if (!englishAlphabet.Contains(chars[i]))
+			{
+				result += chars[i];
+			}
+		}
+		return result;
+	}
+	private static void evenOrOdd(char[] chars)
+	{
+		int lenString = chars.Length;
 		string result = "";
 		if (lenString % 2 != 0)
 		{
-			Array.Reverse(chars);
-			result = new string(chars) + inputString;
+			char[] reverseChar = new char[lenString];
+			Array.Copy(chars, 0, reverseChar, 0, lenString);
+			Array.Reverse(reverseChar);
+			result = new string(reverseChar) + new string(chars);
 			Console.WriteLine(result);
 		}
 		else
@@ -23,6 +36,20 @@
 				result += chars[i];
 			}
 			Console.WriteLine(result);
+		}
+	}
+	private static void Main(string[] args)
+	{
+		string inputString = Console.ReadLine();
+		char[] chars = inputString.ToCharArray();
+		string result = englishLowRegister(chars);
+		if (String.IsNullOrEmpty(result))
+		{
+			evenOrOdd(chars);
+		}
+		else
+		{
+			Console.WriteLine("Ошибка((( в строке находятся вот такие недопустимые символы: " + result);
 		}
 		Console.ReadLine();
 	}
