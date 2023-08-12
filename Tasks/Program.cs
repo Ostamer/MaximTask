@@ -2,6 +2,73 @@
 
 internal class Program
 {
+	private static int Partition(char[] A, int l, int r)
+	{
+		int barrier = A[(l + r) / 2];
+		int i = l;
+		int j = r;
+
+		while (i <= j)
+		{
+			while (A[i] < barrier) i++;
+			while (A[j] > barrier) j--;
+			if (i >= j) break;
+
+			int m = i++;
+			int u = j--;
+
+			char tmp = A[m];
+			A[m] = A[u];
+			A[u] = tmp;
+		}
+
+		return j;
+
+	}
+
+	private static void QuickSort(char[] arr, int l, int r)
+	{
+		if (l < r)
+		{
+			int q = Partition(arr, l, r);
+			QuickSort(arr, l, q);
+			QuickSort(arr, q + 1, r);
+		}
+	}
+
+	private static void HeapSort(char[] arr)
+	{
+		int n = arr.Length;
+		for (int i = n / 2 - 1; i >= 0; i--)
+		{
+			Heapify(arr, n, i);
+		}
+		for (int i = n - 1; i >= 0; i--)
+		{
+			char temp = arr[0];
+			arr[0] = arr[i];
+			arr[i] = temp;
+			Heapify(arr, i, 0);
+		}
+	}
+
+	private static void Heapify(char[] arr, int n, int i)
+	{
+		int largest = i;
+		int l = 2 * i + 1;
+		int r = 2 * i + 2;
+		if (l < n && arr[l] > arr[largest])
+			largest = l;
+		if (r < n && arr[r] > arr[largest])
+			largest = r;
+		if (largest != i)
+		{
+			char swap = arr[i];
+			arr[i] = arr[largest];
+			arr[largest] = swap;
+			Heapify(arr, n, largest);
+		}
+	}
 	private static string englishLowRegister(char[] chars)
 	{
 		string englishAlphabet = "qwertyuiopasdfghjklzxcvbnm";
@@ -95,75 +162,6 @@ internal class Program
 			Console.WriteLine(new string(result));
 		}
 	}
-
-	private static int Partition(char[] A, int l, int r)
-	{
-		int barrier = A[(l + r) / 2];
-		int i = l;
-		int j = r;
-
-		while (i <= j)
-		{
-			while (A[i] < barrier) i++;
-			while (A[j] > barrier) j--;
-			if (i >= j) break;
-
-			int m = i++;
-			int u = j--;
-
-			char tmp = A[m];
-			A[m] = A[u];
-			A[u] = tmp;
-		}
-
-		return j;
-
-	}
-
-	private static void QuickSort(char[] arr, int l, int r)
-	{
-		if (l < r)
-		{
-			int q = Partition(arr, l, r);
-			QuickSort(arr, l, q);
-			QuickSort(arr, q + 1, r);
-		}
-	}
-
-	private static void HeapSort(char[] arr)
-	{
-		int n = arr.Length;
-		for (int i = n / 2 - 1; i >= 0; i--)
-		{
-			Heapify(arr, n, i);
-		}
-		for (int i = n - 1; i >= 0; i--)
-		{
-			char temp = arr[0];
-			arr[0] = arr[i];
-			arr[i] = temp;
-			Heapify(arr, i, 0);
-		}
-	}
-
-	private static void Heapify(char[] arr, int n, int i)
-	{
-		int largest = i;
-		int l = 2 * i + 1;
-		int r = 2 * i + 2;
-		if (l < n && arr[l] > arr[largest])
-			largest = l;
-		if (r < n && arr[r] > arr[largest])
-			largest = r;
-		if (largest != i)
-		{
-			char swap = arr[i];
-			arr[i] = arr[largest];
-			arr[largest] = swap;
-			Heapify(arr, n, largest);
-		}
-	}
-
 	private static void Main(string[] args)
 	{
 		string inputString = Console.ReadLine();
@@ -173,13 +171,10 @@ internal class Program
 		{
             Console.WriteLine("1)Обработанная строка:");
             string finalString = evenOrOdd(chars);
-
             Console.WriteLine("2)Информация о том, сколько раз входил в обработанную строку каждый символ:");
             countAllChars(finalString);
-
             Console.WriteLine("3)Самая длинная подстрока начинающаяся и заканчивающаяся на гласную:");
             maxSubString(finalString);
-
             Console.WriteLine("4)Отсортированная обработанная строка при помощи пирамидального метода сотрировки:");
             char[] sortedArray = finalString.ToCharArray();
 			HeapSort(sortedArray);
