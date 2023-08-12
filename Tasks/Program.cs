@@ -173,13 +173,10 @@ internal class Program
 		{
             Console.WriteLine("1)Обработанная строка:");
             string finalString = evenOrOdd(chars);
-
             Console.WriteLine("2)Информация о том, сколько раз входил в обработанную строку каждый символ:");
             countAllChars(finalString);
-
             Console.WriteLine("3)Самая длинная подстрока начинающаяся и заканчивающаяся на гласную:");
             maxSubString(finalString);
-
             Console.WriteLine("4)Отсортированная обработанная строка при помощи пирамидального метода сотрировки:");
             char[] sortedArray = finalString.ToCharArray();
 			HeapSort(sortedArray);
