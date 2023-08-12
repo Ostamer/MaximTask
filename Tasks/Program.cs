@@ -130,7 +130,7 @@ internal class Program
 		}
 	}
 
-	static void HeapSort(char[] arr)
+	private static void HeapSort(char[] arr)
 	{
 		int n = arr.Length;
 		for (int i = n / 2 - 1; i >= 0; i--)
@@ -146,7 +146,7 @@ internal class Program
 		}
 	}
 
-	static void Heapify(char[] arr, int n, int i)
+	private static void Heapify(char[] arr, int n, int i)
 	{
 		int largest = i;
 		int l = 2 * i + 1;
@@ -182,7 +182,7 @@ internal class Program
 
             Console.WriteLine("4)Отсортированная обработанная строка при помощи пирамидального метода сотрировки:");
             char[] sortedArray = finalString.ToCharArray();
-			QuickSort(sortedArray);
+			HeapSort(sortedArray);
             Console.WriteLine(new string(sortedArray));
         }
 		else
