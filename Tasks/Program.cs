@@ -69,6 +69,7 @@ internal class Program
 			Heapify(arr, n, largest);
 		}
 	}
+
 	private static string englishLowRegister(char[] chars)
 	{
 		string englishAlphabet = "qwertyuiopasdfghjklzxcvbnm";
