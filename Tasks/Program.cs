@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 internal class Program
 {
@@ -180,7 +180,7 @@ internal class Program
             char[] sortedArray = finalString.ToCharArray();
 			HeapSort(sortedArray);
             Console.WriteLine(new string(sortedArray));
-        }
+    }
 		else
 		{
 			Console.WriteLine("Ошибка((( в строке находятся вот такие недопустимые символы: " + result);
