@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Threading.Channels;
 
 internal class Program
 {
@@ -163,6 +165,44 @@ internal class Program
 			Console.WriteLine(new string(result));
 		}
 	}
+	private static int getRandomNumber(int length)
+	{
+		int result = 0;
+		bool a = true;
+		try
+		{
+			length--;
+			string randomizer = "https://api.rand.by/v1/integer/?count=1&min=1&max=" + length;
+			length++;
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(randomizer);
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+			StreamReader reader = new StreamReader(response.GetResponseStream());
+			string answer = reader.ReadLine();
+			int.TryParse(string.Join("", answer.Where(c => char.IsDigit(c))),out result);
+		}
+		catch
+		{
+			a = false;
+        }
+		if (a == false)
+		{
+            Random rnd = new Random();
+			result = rnd.Next(0, length);
+        }
+        return result;
+	}
+	private static void truncateArray(char[] chars)
+	{
+		int randomNumber = getRandomNumber(chars.Length);
+        for(int i = 0; i < chars.Length; i++)
+		{
+			if (i != randomNumber)
+			{
+				Console.Write(chars[i]);
+            }
+		}
+        Console.WriteLine();
+    }
 	private static void Main(string[] args)
 	{
 		string inputString = Console.ReadLine();
@@ -180,7 +220,10 @@ internal class Program
             char[] sortedArray = finalString.ToCharArray();
 			HeapSort(sortedArray);
             Console.WriteLine(new string(sortedArray));
-    }
+            Console.WriteLine("5)«Урезанная» обработанная строка – обработанная строка без одного символа:");
+			char[] truncatedArray = finalString.ToCharArray();
+			truncateArray(truncatedArray);
+        }
 		else
 		{
 			Console.WriteLine("Ошибка((( в строке находятся вот такие недопустимые символы: " + result);
