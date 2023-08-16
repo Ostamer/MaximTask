@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace WebApplication3.Controllers
 {
@@ -7,11 +8,28 @@ namespace WebApplication3.Controllers
 	[ApiController]
 	[Route("api/[controller]")]
 	[Produces("application/json")]
+
 	public class StringController : ControllerBase
 	{
+		private readonly IConfiguration _configuration;
+
+		public StringController(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
 		[HttpGet]
 		public IActionResult ProcessString(string inputString)
 		{
+			string remoteApiUrl = _configuration["RemoteApiUrl"];
+			string[] blacklistWords = _configuration.GetSection("BlacklistWords").Get<string[]>();
+			for (int i = 0; i < blacklistWords.Length; i++)
+			{
+				if (blacklistWords[i] == inputString)
+				{
+					return BadRequest("HTTP ошибка 400 Bad Request. Ошибка((( строка находятся в черном списке.");
+
+				}
+			}
 			char[] chars = inputString.ToCharArray();
 			string result = englishLowRegister(chars);
 			if (String.IsNullOrEmpty(result))
@@ -22,7 +40,7 @@ namespace WebApplication3.Controllers
 				char[] sortedArray = finalString.ToCharArray();
 				HeapSort(sortedArray);
 				char[] truncatedArray = finalString.ToCharArray();
-				string truncate = truncateArray(truncatedArray);
+				string truncate = truncateArray(truncatedArray,remoteApiUrl);
 				string[] mas = new string[5];
 				mas[0] = finalString;
 				mas[1] = countChars;
@@ -200,14 +218,14 @@ namespace WebApplication3.Controllers
 				return new string(result);
 			}
 		}
-		private static int getRandomNumber(int length)
+		private static int getRandomNumber(int length,string url)
 		{
 			int result = 0;
 			bool a = true;
 			try
 			{
 				length--;
-				string randomizer = "https://api.rand.by/v1/integer/?count=1&min=1&max=" + length;
+				string randomizer = url + length;
 				length++;
 				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(randomizer);
 				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -226,9 +244,9 @@ namespace WebApplication3.Controllers
 			}
 			return result;
 		}
-		private static string truncateArray(char[] chars)
+		private static string truncateArray(char[] chars, string url)
 		{
-			int randomNumber = getRandomNumber(chars.Length);
+			int randomNumber = getRandomNumber(chars.Length, url);
 			string result = "";
 			for (int i = 0; i < chars.Length; i++)
 			{
