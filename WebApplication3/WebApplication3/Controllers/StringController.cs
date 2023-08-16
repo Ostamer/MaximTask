@@ -8,18 +8,25 @@ namespace WebApplication3.Controllers
 	[ApiController]
 	[Route("api/[controller]")]
 	[Produces("application/json")]
-
 	public class StringController : ControllerBase
 	{
+		private static SemaphoreSlim semaphore;
+		private static int Limit;
 		private readonly IConfiguration _configuration;
 
 		public StringController(IConfiguration configuration)
 		{
 			_configuration = configuration;
+			Limit = int.Parse(_configuration.GetSection("Settings")["Limit"]);
+			semaphore = new SemaphoreSlim(Limit);
 		}
 		[HttpGet]
 		public IActionResult ProcessString(string inputString)
 		{
+			if (!semaphore.Wait(0))
+			{
+				return StatusCode(503, "HTTP ошибка 503 Service Unavailable");
+			}
 			string remoteApiUrl = _configuration["RemoteApiUrl"];
 			string[] blacklistWords = _configuration.GetSection("BlacklistWords").Get<string[]>();
 			for (int i = 0; i < blacklistWords.Length; i++)
